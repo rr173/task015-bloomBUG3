@@ -73,6 +73,10 @@ func (a *API) add(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, map[string]any{"error": err.Error(), "status": http.StatusBadRequest})
 		return
 	}
+	if req.Item == nil {
+		writeJSON(w, http.StatusBadRequest, map[string]any{"error": "缺少 item 字段", "status": http.StatusBadRequest})
+		return
+	}
 	a.filter.Add(*req.Item)
 	s := a.filter.Stats()
 	writeJSON(w, http.StatusOK, map[string]any{
